@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState, useEffect } from "react";
+import Student from "./components/Student";
 
 function App() {
+  // state variable storing student profiles
+  const [studentProfiles, setStudentProfiles] = useState([]);
+
+  // retrieve student data
+  const getStudentProfiles = async () => {
+    // fetch json data from hatchways API
+    const response = await fetch(
+      "https://api.hatchways.io/assessment/students",
+      {
+        method: "GET",
+      }
+    );
+    const data = await response.json();
+
+    // update state
+    setStudentProfiles(data.students);
+  };
+
+  // after render, get student profiles
+  useEffect(() => {
+    getStudentProfiles();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="studentProfiles">
+        {studentProfiles.map((student) => {
+          return <Student key={student.id} studentData={student} />;
+        })}
+      </div>
     </div>
   );
 }
