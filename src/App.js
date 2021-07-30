@@ -2,6 +2,10 @@ import "./app.css";
 import { useState, useEffect } from "react";
 import Profile from "./components/Profile";
 
+//REWORK
+//1. IN PLACE STUDENT DATA UPDATING??
+//2. SEARCH VALIDATION (all queries must pass)
+
 function App() {
   // state variable storing student profiles
   const [studentData, setStudentData] = useState([]);
@@ -23,8 +27,11 @@ function App() {
   };
 
   const filterProfilesByName = (e) => {
-    let searchQuery = e.target.value.split(" ").filter((value) => value !== "");
-    console.log("ok", studentDataFiltered);
+    let searchQuery = e.target.value
+      .toLowerCase()
+      .split(" ")
+      .filter((value) => value !== "");
+    console.log("Queries: ", searchQuery);
 
     const searchResults = studentData.filter((student) => {
       const fullName = student.firstName + student.lastName;
@@ -41,9 +48,10 @@ function App() {
       //   return isFound;
       // });
       // console.log(searchResults);
+      //console.log(searchQuery);
       return fullName.toLowerCase().includes(searchQuery[0]);
     });
-    console.log(searchQuery[0]);
+    console.log(studentData);
     if (searchQuery[0] === undefined) {
       setStudentDataFiltered(null);
     } else {
