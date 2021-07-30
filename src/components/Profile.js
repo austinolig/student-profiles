@@ -20,9 +20,12 @@ const Profile = ({ studentData }) => {
     <div className="profile">
       <img className="profilePic" src={studentData.pic} alt="profile pic" />
       <div>
-        <h1 className="profileName">
-          {studentData.firstName} {studentData.lastName}
-        </h1>
+        <div className="profileHeader">
+          <h1 className="profileName">
+            {studentData.firstName} {studentData.lastName}
+          </h1>
+          <button>+</button>
+        </div>
         <div className="profileDetails">
           <p>Email: {studentData.email}</p>
           <p>Company: {studentData.company}</p>
