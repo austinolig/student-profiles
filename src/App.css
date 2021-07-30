@@ -10,14 +10,14 @@
 
 .searchBoxes {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.625rem;
   box-sizing: border-box;
 }
 
 .inputSearchName {
   font-size: 1.25rem;
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.625rem 0.3rem 0.625rem 0.3rem;
   box-sizing: border-box;
 }
 
