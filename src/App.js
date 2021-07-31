@@ -8,8 +8,12 @@ import Profile from "./components/Profile";
 
 function App() {
   // state variable storing student profiles
+  const [test, setTest] = useState([
+    { name: "a", bang: "ya" },
+    { name: "b", bang: "yas" },
+  ]);
   const [studentData, setStudentData] = useState([]);
-  const [studentDataFiltered, setStudentDataFiltered] = useState(null);
+  const [studentDataFiltered, setStudentDataFiltered] = useState([]);
 
   // retrieve student data
   const getStudentData = async () => {
@@ -21,13 +25,18 @@ function App() {
       }
     );
     const data = await response.json();
-
+    // data.students.map((profile) => ({ ...profile, ...{ tags: [] } }));
     // update state
-    setStudentData(data.students);
+    setStudentData(
+      data.students.map((profile) => ({ ...profile, ...{ tags: [] } }))
+    ); // ADD EMPTY TAGS
+    // setStudentDataFiltered(
+    //   data.students.map((profile) => ({ ...profile, ...{ tags: [] } }))
+    // );
   };
 
-  const filterProfilesByName = (e) => {
-    let searchQuery = e.target.value
+  const filterProfilesByName = (filter) => {
+    let searchQuery = filter //e.target.value
       .toLowerCase()
       .split(" ")
       .filter((value) => value !== "");
@@ -51,11 +60,79 @@ function App() {
       //console.log(searchQuery);
       return fullName.toLowerCase().includes(searchQuery[0]);
     });
+    console.log(studentDataFiltered);
     console.log(studentData);
     if (searchQuery[0] === undefined) {
       setStudentDataFiltered(null);
     } else {
       setStudentDataFiltered(searchResults);
+    }
+  };
+
+  const filterProfilesByTag = (filter) => {
+    let searchQuery = filter //e.target.value
+      .toLowerCase()
+      .split(" ")
+      .filter((value) => value !== "");
+    console.log("Queries: ", searchQuery[0]);
+
+    const searchResults = studentData.filter((student) => {
+      return student.tags.some((tag) => {
+        return tag.includes(searchQuery[0]);
+      });
+    });
+
+    // student.tags.includes(searchQuery)
+    //   let isFound = false;
+    //   console.log(fullName);
+    //   for (let q of searchQuery) {
+    //     console.log(q);
+    //     if (!fullName.toLowerCase().includes(q)) {
+    //       isFound = false;
+    //     } else {
+    //       isFound = true;
+    //     }
+    //   }
+    //   return isFound;
+    // });
+    // console.log(searchResults);
+    //console.log(searchQuery);
+    //});
+    console.log("res", searchResults);
+    //console.log(studentDataFiltered);
+    //console.log(studentData);
+    if (searchQuery[0] === undefined) {
+      setStudentDataFiltered(null);
+    } else {
+      setStudentDataFiltered(searchResults);
+    }
+  };
+
+  const submitTag = (e, studentID) => {
+    if (e.key === "Enter") {
+      const inputTag = e.target.value;
+
+      const filterData = (data) => {
+        if (data !== undefined && data !== null) {
+          return data.map((student) => {
+            if (student.id === studentID) {
+              return {
+                ...student,
+                ...{ tags: [...student.tags, inputTag] },
+              };
+            } else {
+              return { ...student };
+            }
+          });
+        }
+      };
+
+      // const newData =
+      // const newDataFiltered = filterData(studentDataFiltered);
+
+      e.target.value = "";
+      setStudentData(filterData(studentData));
+      setStudentDataFiltered(filterData(studentDataFiltered));
     }
   };
 
@@ -71,16 +148,34 @@ function App() {
           className="inputSearchName"
           type="text"
           placeholder="Search by name"
-          onChange={filterProfilesByName}
+          onChange={(event) => filterProfilesByName(event.target.value)}
+        />
+        <input
+          className="inputSearchTag"
+          type="text"
+          placeholder="Search by tag"
+          onChange={(event) => filterProfilesByTag(event.target.value)}
         />
       </div>
       <div className="studentProfiles">
-        {studentDataFiltered !== null // && studentDataFiltered.length > 0
+        {studentDataFiltered !== null // && studentDataFiltered !== undefined // && studentDataFiltered.length > 0
           ? studentDataFiltered.map((student) => {
-              return <Profile key={student.id} studentData={student} />;
+              return (
+                <Profile
+                  key={student.id}
+                  studentData={student}
+                  addTag={submitTag}
+                />
+              );
             })
           : studentData.map((student) => {
-              return <Profile key={student.id} studentData={student} />;
+              return (
+                <Profile
+                  key={student.id}
+                  studentData={student}
+                  addTag={submitTag}
+                />
+              );
             })}
       </div>
     </div>
