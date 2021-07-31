@@ -1,14 +1,20 @@
 .profile {
   display: flex;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #f0f0f0;
   padding: 0.5rem;
 }
 
 .profilePic {
-  margin: 1rem;
-  height: 122px;
-  border: 2px solid #e5e5e5;
+  margin: 0.75rem;
+  height: 136px;
+  border: 1px solid lightgrey;
   border-radius: 50%;
+}
+
+.profileText {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 0.625rem;
 }
 
 .profileName {
@@ -18,20 +24,61 @@
 }
 
 .profileHeader {
-  margin: 0.125rem 1.25rem 0.125rem 1.25rem;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  display: flex;
+  justify-content: space-between;
 }
 
-.profileHeader > button {
+.btnExpand {
   all: unset;
   cursor: pointer;
   font-family: "Raleway", sans-serif;
-  font-size: 5rem;
+  font-size: 2rem;
+}
+
+.btnExpand > svg {
+  color: darkgray;
+  vertical-align: text-bottom;
+}
+
+.btnExpand > svg:hover {
+  color: black;
 }
 
 .profileDetails {
-  margin: 0.75rem 2.625rem 0.75rem 2.625rem;
+  margin: 0.625rem 1.375rem 0.625rem 1.375rem;
 }
 
 .profileDetails > p {
   margin: 0.3rem 0 0.3rem 0;
+}
+
+.profileExpandedDetails {
+  padding-top: 0.875rem;
+  padding-bottom: 0.5rem;
+}
+
+.profileExpandedDetails > p {
+  white-space: pre;
+  margin: 0rem;
+}
+
+.profileTags {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.25rem;
+}
+
+.tag {
+  display: inline-block;
+  margin: 0 0.25rem 0.25rem 0;
+  padding: 0.625rem;
+  background-color: #e0e0e0;
+  border-radius: 0.25rem;
+}
+
+.inputAddTag {
+  font-size: 1rem;
+  padding: 0.75rem 0.25rem 0.75rem 0.25rem;
 }
