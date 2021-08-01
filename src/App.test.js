@@ -1,16 +1,11 @@
-import { render, screen } from "@testing-library/react";
-import App from "./App.js";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import App from "./App";
 
-// test("Checks for 'Hi' on page", () => {
-//   render(<App />);
-//   const linkElement = screen.getByText("Email");
-//   expect(linkElement).toBeInTheDocument();
-// });
-
-test("Average of [1, 3] is 2", () => {
-  expect((1 + 3) / 2).toBe(2);
+test("Expand button color changes on hover", async () => {
+  render(<App />);
+  const expandButton = await waitFor(() => screen.getAllByRole("img")[0]);
+  console.log(expandButton);
+  //expect(expandButton.firstElementChild.style.color).toBe("darkgray");
+  //const first = container.querySelector(".btnExpand");
+  //console.log(first);
 });
-
-// test("data is loaded correctly", () => {
-//   App.prototype.getStudentProfiles();
-// });
