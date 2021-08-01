@@ -3,16 +3,15 @@ import { useState, useEffect } from "react";
 import Profile from "./components/Profile";
 
 //REWORK
-//1. IN PLACE STUDENT DATA UPDATING??
-//2. SEARCH VALIDATION (all queries must pass)
+//1. COMMENTS
 
 function App() {
-  // state variable storing student profiles
-  const [test, setTest] = useState([
-    { name: "a", bang: "ya" },
-    { name: "b", bang: "yas" },
-  ]);
+  // search filters/queries
+  const [nameSearchFilter, setNameSearchFilter] = useState("");
+  const [tagSearchFilter, setTagSearchFilter] = useState("");
+  // state variable storing original student profiles
   const [studentData, setStudentData] = useState([]);
+  // state variable storing filtered student profiles
   const [studentDataFiltered, setStudentDataFiltered] = useState([]);
 
   // retrieve student data
@@ -25,88 +24,42 @@ function App() {
       }
     );
     const data = await response.json();
-    // data.students.map((profile) => ({ ...profile, ...{ tags: [] } }));
-    // update state
+    // update state and add tags property
     setStudentData(
       data.students.map((profile) => ({ ...profile, ...{ tags: [] } }))
-    ); // ADD EMPTY TAGS
-    // setStudentDataFiltered(
-    //   data.students.map((profile) => ({ ...profile, ...{ tags: [] } }))
-    // );
+    );
   };
 
-  const filterProfilesByName = (filter) => {
-    let searchQuery = filter //e.target.value
+  // filter student data and re-render
+  // on nameSearchFilter updating
+  useEffect(() => {
+    const searchQueryName = nameSearchFilter
       .toLowerCase()
       .split(" ")
       .filter((value) => value !== "");
-    console.log("Queries: ", searchQuery);
 
-    const searchResults = studentData.filter((student) => {
-      const fullName = student.firstName + student.lastName;
-      //   let isFound = false;
-      //   console.log(fullName);
-      //   for (let q of searchQuery) {
-      //     console.log(q);
-      //     if (!fullName.toLowerCase().includes(q)) {
-      //       isFound = false;
-      //     } else {
-      //       isFound = true;
-      //     }
-      //   }
-      //   return isFound;
-      // });
-      // console.log(searchResults);
-      //console.log(searchQuery);
-      return fullName.toLowerCase().includes(searchQuery[0]);
-    });
-    console.log(studentDataFiltered);
-    console.log(studentData);
-    if (searchQuery[0] === undefined) {
-      setStudentDataFiltered(null);
-    } else {
-      setStudentDataFiltered(searchResults);
-    }
-  };
-
-  const filterProfilesByTag = (filter) => {
-    let searchQuery = filter //e.target.value
+    const searchQueryTag = tagSearchFilter
       .toLowerCase()
       .split(" ")
       .filter((value) => value !== "");
-    console.log("Queries: ", searchQuery[0]);
 
-    const searchResults = studentData.filter((student) => {
-      return student.tags.some((tag) => {
-        return tag.includes(searchQuery[0]);
+    const filterNames = (student) => {
+      return searchQueryName.every((query) => {
+        const fullName = student.firstName + student.lastName;
+        return fullName.toLowerCase().includes(query);
       });
-    });
+    };
 
-    // student.tags.includes(searchQuery)
-    //   let isFound = false;
-    //   console.log(fullName);
-    //   for (let q of searchQuery) {
-    //     console.log(q);
-    //     if (!fullName.toLowerCase().includes(q)) {
-    //       isFound = false;
-    //     } else {
-    //       isFound = true;
-    //     }
-    //   }
-    //   return isFound;
-    // });
-    // console.log(searchResults);
-    //console.log(searchQuery);
-    //});
-    console.log("res", searchResults);
-    //console.log(studentDataFiltered);
-    //console.log(studentData);
-    if (searchQuery[0] === undefined) {
-      setStudentDataFiltered(null);
-    } else {
-      setStudentDataFiltered(searchResults);
-    }
-  };
+    const filterTags = (student) => {
+      return searchQueryTag.every((query) => {
+        //const fullName = student.firstName + student.lastName;
+        return student.tags.some((tag) => tag.toLowerCase().includes(query));
+      });
+    };
+
+    const finalResults = studentData.filter(filterNames).filter(filterTags);
+    setStudentDataFiltered(finalResults);
+  }, [nameSearchFilter, tagSearchFilter, studentData]);
 
   const submitTag = (e, studentID) => {
     if (e.key === "Enter") {
@@ -127,9 +80,6 @@ function App() {
         }
       };
 
-      // const newData =
-      // const newDataFiltered = filterData(studentDataFiltered);
-
       e.target.value = "";
       setStudentData(filterData(studentData));
       setStudentDataFiltered(filterData(studentDataFiltered));
@@ -145,20 +95,24 @@ function App() {
     <div className="app">
       <div className="searchBoxes">
         <input
+          name="searchByName"
           className="inputSearchName"
           type="text"
           placeholder="Search by name"
-          onChange={(event) => filterProfilesByName(event.target.value)}
+          autoComplete="off"
+          onChange={(e) => setNameSearchFilter(e.target.value)}
         />
         <input
+          name="searchByTag"
           className="inputSearchTag"
           type="text"
           placeholder="Search by tag"
-          onChange={(event) => filterProfilesByTag(event.target.value)}
+          autoComplete="off"
+          onChange={(e) => setTagSearchFilter(e.target.value)}
         />
       </div>
       <div className="studentProfiles">
-        {studentDataFiltered !== null // && studentDataFiltered !== undefined // && studentDataFiltered.length > 0
+        {nameSearchFilter !== "" || tagSearchFilter !== "" // !== null   //&& studentDataFiltered !== undefined // && studentDataFiltered.length > 0
           ? studentDataFiltered.map((student) => {
               return (
                 <Profile
