@@ -4,6 +4,10 @@
   padding: 0.5rem;
 }
 
+.profile:last-child {
+  border-bottom: none;
+}
+
 .profilePic {
   margin: 0.75rem;
   height: 136px;
@@ -43,6 +47,10 @@
 }
 
 .btnExpand > svg:hover {
+  color: black;
+}
+
+.btnExpand:focus > svg {
   color: black;
 }
 
