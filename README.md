@@ -2,10 +2,8 @@
 
 ## Comments
 
-<!--
-- In order to replicate the frontend application as close as possible, many paddings/margins were modified more than I'd prefer, in most cases. (ex. src/components/profile.css => '.profileDetailsExpanded' margin value) -->
-
-- Some of the css styles appear different in later parts of the assessment
+- Search queries separated by space (' ') are accepted
+- Some of the css styles appear slightly different in later parts of the assessment
 - This assessment was honestly quite interesting and fun!
 
 ## Scripts
