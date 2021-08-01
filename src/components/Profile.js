@@ -4,7 +4,6 @@ import { useState } from "react";
 
 const Profile = ({ studentData, addTag }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [tags, setTags] = useState([]);
 
   // calculate average grade
   const getAverageGrade = (grades) => {
@@ -20,20 +19,6 @@ const Profile = ({ studentData, addTag }) => {
     gradeAverage = gradeSum / studentData.grades.length;
     return gradeAverage;
   };
-
-  // const updateTag = (e) => {
-  //   const tag = e.target.value;
-
-  //   console.log(tags);
-  //   //setTags(tag);
-  // };
-
-  // const submitTag = (e) => {
-  //   if (e.key === "Enter") {
-  //     const tag = e.target.value;
-  //     setTags([...tags, tag]);
-  //   }
-  // };
 
   return (
     <div className="profile">
@@ -86,7 +71,6 @@ const Profile = ({ studentData, addTag }) => {
             className="inputAddTag"
             type="text"
             placeholder="Add a tag"
-            //onChange={updateTag}
             onKeyPress={(e) => {
               addTag(e, studentData.id);
             }}
