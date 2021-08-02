@@ -1,16 +1,17 @@
 # Frontend Assessment - Student Profiles
+
 #### https://student-profiles.austinoligar.io
 
 Hosted and deployed with Amazon Web Services (Amplify)
 
 - For access, use the following details:
-     - `username: admin`
-     - `password: hatchways`
+  - `username: admin`
+  - `password: hatchways`
 
 ## Comments
 
 - Search queries separated by space (' ') are accepted
-- Some of the css styles appear slightly different in later parts of the assessment
+- Responsive css layout for devices with smaller resolutions
 - This assessment was honestly quite interesting and fun!
 
 ## Scripts
