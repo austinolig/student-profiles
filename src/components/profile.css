@@ -67,15 +67,17 @@
   border-radius: 0.25rem;
 }
 
-.tag > span {
+.btnDeleteTag {
+  all: unset;
   position: relative;
-  top: -1rem;
+  cursor: pointer;
+  font-size: 0.5rem;
 }
 
-.tag > span > svg {
+.btnDeleteTag > svg {
   padding: 0.25rem;
   position: absolute;
-  font-size: 0.5rem;
+  top: -2rem;
   background-color: rgb(255, 80, 80);
   border-radius: 50%;
 }
@@ -89,7 +91,6 @@
   all: unset;
   cursor: pointer;
   font-size: 2rem;
-  font-family: "Raleway", sans-serif;
 }
 
 .btnExpand > svg {
