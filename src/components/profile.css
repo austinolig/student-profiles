@@ -1,11 +1,17 @@
 .profile {
+  padding: 0.5rem;
   display: flex;
   border-bottom: 1px solid #f0f0f0;
-  padding: 0.5rem;
 }
 
 .profile:last-child {
   border-bottom: none;
+}
+
+.profileText {
+  padding-left: 1rem;
+  padding-right: 0.625rem;
+  width: 100%;
 }
 
 .profilePic {
@@ -15,10 +21,11 @@
   border-radius: 50%;
 }
 
-.profileText {
-  width: 100%;
-  padding-left: 1rem;
-  padding-right: 0.625rem;
+.profileHeader {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .profileName {
@@ -27,39 +34,13 @@
   text-transform: uppercase;
 }
 
-.profileHeader {
-  padding-top: 0.125rem;
-  padding-bottom: 0.125rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.btnExpand {
-  all: unset;
-  cursor: pointer;
-  font-family: "Raleway", sans-serif;
-  font-size: 2rem;
-}
-
-.btnExpand > svg {
-  color: darkgray;
-  vertical-align: text-bottom;
-}
-
-.btnExpand > svg:hover {
-  color: black;
-}
-
-.btnExpand:focus > svg {
-  color: black;
-}
-
 .profileDetails {
   margin: 0.625rem 1.375rem 0.625rem 1.375rem;
 }
 
 .profileDetails > p {
-  margin: 0.3rem 0 0.3rem 0;
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
 }
 
 .profileExpandedDetails {
@@ -68,25 +49,45 @@
 }
 
 .profileExpandedDetails > p {
-  white-space: pre;
   margin: 0rem;
+  white-space: pre;
 }
 
 .profileTags {
+  padding: 0.25rem;
   display: flex;
   flex-wrap: wrap;
-  padding: 0.25rem;
 }
 
 .tag {
-  display: inline-block;
   margin: 0 0.25rem 0.25rem 0;
   padding: 0.625rem;
+  display: inline-block;
   background-color: #e0e0e0;
   border-radius: 0.25rem;
 }
 
 .inputAddTag {
-  font-size: 1rem;
   padding: 0.75rem 0.25rem 0.75rem 0.25rem;
+  font-size: 1rem;
+}
+
+.btnExpand {
+  all: unset;
+  cursor: pointer;
+  font-size: 2rem;
+  font-family: "Raleway", sans-serif;
+}
+
+.btnExpand > svg {
+  color: darkgray;
+  vertical-align: text-bottom;
+}
+
+.btnExpand:hover > svg {
+  color: black;
+}
+
+.btnExpand:focus > svg {
+  color: black;
 }
