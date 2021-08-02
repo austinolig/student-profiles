@@ -34,3 +34,17 @@
   width: 100%;
   overflow: scroll;
 }
+
+@media screen and (max-width: 850px) {
+  .app {
+    width: 80%;
+    height: 90%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .app {
+    width: 90%;
+    height: 98%;
+  }
+}
