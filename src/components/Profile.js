@@ -65,15 +65,11 @@ const Profile = ({ studentData, onTagUpdate, onTagDelete }) => {
                   return (
                     <p key={index} className="tag">
                       {tag}
-                      <span>
+                      <button className="btnDeleteTag">
                         <FaTimes
-                          onClick={(e) => {
-                            // if tag input value is not blank
-                            //if (e.target.value.trim().length !== 0)
-                            onTagDelete(tag, studentData.id);
-                          }}
+                          onClick={() => onTagDelete(tag, studentData.id)}
                         />
-                      </span>
+                      </button>
                     </p>
                   );
                 })
