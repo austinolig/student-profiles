@@ -33,7 +33,13 @@
 .studentProfiles {
   width: 100%;
   overflow: scroll;
+  /* overflow-x: hidden;
+  overflow-y: hidden; */
 }
+
+/* .studentProfiles::-webkit-scrollbar {
+  display: none;
+} */
 
 @media screen and (max-width: 850px) and (max-height: 450px) {
   .app {
