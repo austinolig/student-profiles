@@ -1,5 +1,5 @@
 # Frontend Assessment - Student Profiles
-#### https://student-profiles.austinoligar.io/
+#### https://student-profiles.austinoligar.io
 
 Hosted and deployed with Amazon Web Services (Amplify)
 
