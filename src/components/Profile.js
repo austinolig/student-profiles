@@ -2,13 +2,12 @@ import "./profile.css";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useState } from "react";
 
-const Profile = ({ studentData, addTag }) => {
+const Profile = ({ studentData, updateTag }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // calculate average grade
+  // calculate and return average grade
   const getAverageGrade = (grades) => {
-    let gradeSum = 0,
-      gradeAverage = 0;
+    let gradeSum = 0;
 
     // sum all grades
     for (let i = 0; i < studentData.grades.length; i++) {
@@ -16,7 +15,7 @@ const Profile = ({ studentData, addTag }) => {
     }
 
     // divide grade sum by length of grades
-    gradeAverage = gradeSum / studentData.grades.length;
+    const gradeAverage = gradeSum / studentData.grades.length;
     return gradeAverage;
   };
 
@@ -47,7 +46,7 @@ const Profile = ({ studentData, addTag }) => {
           <p>Skill: {studentData.skill}</p>
           <p>Average: {getAverageGrade(studentData.grades)}%</p>
           {
-            // show expanded details on button click
+            // show expanded details if button is clicked
             isExpanded && (
               <div className="profileExpandedDetails">
                 {studentData.grades.map((grade, index) => {
@@ -59,20 +58,26 @@ const Profile = ({ studentData, addTag }) => {
             )
           }
           <div className="profileTags">
-            {studentData.tags.map((tag, index) => {
-              return (
-                <p key={index} className="tag">
-                  {tag}
-                </p>
-              );
-            })}
+            {
+              // if student data contains tags
+              studentData.tags.length > 0 &&
+                studentData.tags.map((tag, index) => {
+                  return (
+                    <p key={index} className="tag">
+                      {tag}
+                    </p>
+                  );
+                })
+            }
           </div>
           <input
             className="inputAddTag"
             type="text"
             placeholder="Add a tag"
             onKeyPress={(e) => {
-              addTag(e, studentData.id);
+              // if tag input value is not blank
+              if (e.target.value.trim().length !== 0)
+                updateTag(e, studentData.id);
             }}
           />
         </div>
