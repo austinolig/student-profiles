@@ -5,10 +5,10 @@ body {
 }
 
 input[type="text"] {
-  font-family: "Raleway", sans-serif;
   border: 0;
   outline: 0;
   border-bottom: 1px solid lightgrey;
+  font-family: "Raleway", sans-serif;
 }
 
 input[type="text"]:focus {
