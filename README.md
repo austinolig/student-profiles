@@ -12,6 +12,7 @@ Hosted and deployed with Amazon Web Services (Amplify)
 
 - Search queries separated by space (' ') are accepted
 - Responsive css layout for devices with smaller resolutions
+- You may delete tags by pressing the red 'x'
 - This assessment was honestly quite interesting and fun!
 
 ## Scripts
