@@ -2,12 +2,7 @@ body {
   margin: 0;
   background-color: #f0f0f0;
   font-family: "Raleway", sans-serif;
-  min-height: -webkit-fill-available;
 }
-
-/* html {
-  min-height: -webkit-fill-available;
-} */
 
 input[type="text"] {
   border: 0;
@@ -25,4 +20,10 @@ input[type="text"]:focus {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media screen and (max-width: 450px) {
+  #root {
+    min-height: 100%;
+  }
 }
