@@ -1,8 +1,8 @@
 import "./profile.css";
-import { FaMinus, FaPlus } from "react-icons/fa";
+import { FaMinus, FaPlus, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 
-const Profile = ({ studentData, updateTag }) => {
+const Profile = ({ studentData, onTagUpdate, onTagDelete }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // calculate and return average grade
@@ -65,6 +65,15 @@ const Profile = ({ studentData, updateTag }) => {
                   return (
                     <p key={index} className="tag">
                       {tag}
+                      <span>
+                        <FaTimes
+                          onClick={(e) => {
+                            // if tag input value is not blank
+                            //if (e.target.value.trim().length !== 0)
+                            onTagDelete(tag, studentData.id);
+                          }}
+                        />
+                      </span>
                     </p>
                   );
                 })
@@ -77,7 +86,7 @@ const Profile = ({ studentData, updateTag }) => {
             onKeyPress={(e) => {
               // if tag input value is not blank
               if (e.target.value.trim().length !== 0)
-                updateTag(e, studentData.id);
+                onTagUpdate(e, studentData.id);
             }}
           />
         </div>
