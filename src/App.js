@@ -77,24 +77,43 @@ function App() {
     if (e.key === "Enter") {
       const tagInputValue = e.target.value;
       const updatedStudentData = () => {
-        if (studentData !== undefined && studentData !== null) {
-          return studentData.map((student) => {
-            if (student.id === studentID) {
-              return {
-                ...student,
-                ...{ tags: [...student.tags, tagInputValue] },
-              };
-            } else {
-              return { ...student };
-            }
-          });
-        }
+        return studentData.map((student) => {
+          if (student.id === studentID) {
+            return {
+              ...student,
+              ...{ tags: [...student.tags, tagInputValue] },
+            };
+          } else {
+            return { ...student };
+          }
+        });
       };
       // clear tag input value
       e.target.value = "";
 
       setStudentData(updatedStudentData);
     }
+  };
+
+  // update studentData tags to delete on
+  // button click, for corresponding student ID
+  const deleteTag = (tagToDelete, studentID) => {
+    const updatedStudentData = () => {
+      return studentData.map((student) => {
+        if (student.id === studentID) {
+          return {
+            ...student,
+            ...{
+              tags: [...student.tags.filter((tag) => tag !== tagToDelete)],
+            },
+          };
+        } else {
+          return { ...student };
+        }
+      });
+    };
+
+    setStudentData(updatedStudentData);
   };
 
   return (
@@ -129,7 +148,8 @@ function App() {
                   <Profile
                     key={student.id}
                     studentData={student}
-                    updateTag={updateTag}
+                    onTagUpdate={updateTag}
+                    onTagDelete={deleteTag}
                   />
                 );
               })
@@ -138,7 +158,8 @@ function App() {
                   <Profile
                     key={student.id}
                     studentData={student}
-                    updateTag={updateTag}
+                    onTagUpdate={updateTag}
+                    onTagDelete={deleteTag}
                   />
                 );
               })
