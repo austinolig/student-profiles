@@ -2,76 +2,87 @@ import "./app.css";
 import { useState, useEffect } from "react";
 import Profile from "./components/Profile";
 
-//REWORK
-//1. COMMENTS
-
 function App() {
-  // search filters/queries
-  const [nameSearchFilter, setNameSearchFilter] = useState("");
-  const [tagSearchFilter, setTagSearchFilter] = useState("");
-  // state variable storing original student profiles
+  const [nameSearchInput, setNameSearchInput] = useState("");
+  const [tagSearchInput, setTagSearchInput] = useState("");
   const [studentData, setStudentData] = useState([]);
-  // state variable storing filtered student profiles
   const [studentDataFiltered, setStudentDataFiltered] = useState([]);
 
-  // retrieve student data
-  const getStudentData = async () => {
-    // fetch json data from hatchways API
-    const response = await fetch(
-      "https://api.hatchways.io/assessment/students",
-      {
-        method: "GET",
-      }
-    );
-    const data = await response.json();
-    // update state and add tags property
-    setStudentData(
-      data.students.map((profile) => ({ ...profile, ...{ tags: [] } }))
-    );
-  };
-
-  // filter student data and re-render
-  // on nameSearchFilter updating
+  // on initial render, get student data
   useEffect(() => {
-    const searchQueryName = nameSearchFilter
-      .toLowerCase()
-      .split(" ")
-      .filter((value) => value !== "");
+    // perform GET request for student data
+    // from hatchways API. Parse json response
+    // and set studentData state
+    const getStudentData = async () => {
+      const response = await fetch(
+        "https://api.hatchways.io/assessment/students",
+        {
+          method: "GET",
+        }
+      );
+      const data = await response.json();
 
-    const searchQueryTag = tagSearchFilter
-      .toLowerCase()
-      .split(" ")
-      .filter((value) => value !== "");
+      // map student data with tags property
+      setStudentData(
+        data.students.map((profile) => ({ ...profile, ...{ tags: [] } }))
+      );
+    };
 
-    const filterNames = (student) => {
-      return searchQueryName.every((query) => {
+    getStudentData();
+  }, []);
+
+  // filter student data by name and tag
+  // when nameSearchInput, tagSearchInput,
+  // or studentData state is updated
+  useEffect(() => {
+    // return search queries for a given
+    // search input by name or tag
+    const getSearchQueries = (searchInput) => {
+      return searchInput
+        .trim()
+        .toLowerCase()
+        .split(" ")
+        .filter((value) => value !== "");
+    };
+
+    // filter for given student data, by name
+    const filterByName = (student) => {
+      const nameSearchQueries = getSearchQueries(nameSearchInput);
+      return nameSearchQueries.every((query) => {
         const fullName = student.firstName + student.lastName;
         return fullName.toLowerCase().includes(query);
       });
     };
 
-    const filterTags = (student) => {
-      return searchQueryTag.every((query) => {
-        //const fullName = student.firstName + student.lastName;
+    // filter for given student data, by tag
+    const filterByTag = (student) => {
+      const tagSearchQueries = getSearchQueries(tagSearchInput);
+      return tagSearchQueries.every((query) => {
         return student.tags.some((tag) => tag.toLowerCase().includes(query));
       });
     };
 
-    const finalResults = studentData.filter(filterNames).filter(filterTags);
-    setStudentDataFiltered(finalResults);
-  }, [nameSearchFilter, tagSearchFilter, studentData]);
+    // apply filters on student data by name and tag
+    const filteredStudentData = studentData
+      .filter(filterByName)
+      .filter(filterByTag);
 
-  const submitTag = (e, studentID) => {
+    setStudentDataFiltered(filteredStudentData);
+  }, [nameSearchInput, tagSearchInput, studentData]);
+
+  // update studentData tags with tag input
+  // value when enter key is pressed, for
+  // corresponding student ID
+  const updateTag = (e, studentID) => {
     if (e.key === "Enter") {
-      const inputTag = e.target.value;
-
-      const filterData = (data) => {
-        if (data !== undefined && data !== null) {
-          return data.map((student) => {
+      const tagInputValue = e.target.value;
+      const updatedStudentData = () => {
+        if (studentData !== undefined && studentData !== null) {
+          return studentData.map((student) => {
             if (student.id === studentID) {
               return {
                 ...student,
-                ...{ tags: [...student.tags, inputTag] },
+                ...{ tags: [...student.tags, tagInputValue] },
               };
             } else {
               return { ...student };
@@ -79,17 +90,12 @@ function App() {
           });
         }
       };
-
+      // clear tag input value
       e.target.value = "";
-      setStudentData(filterData(studentData));
-      setStudentDataFiltered(filterData(studentDataFiltered));
+
+      setStudentData(updatedStudentData);
     }
   };
-
-  // after render, get student data
-  useEffect(() => {
-    getStudentData();
-  }, []);
 
   return (
     <div className="app">
@@ -99,38 +105,44 @@ function App() {
           className="inputSearchName"
           type="text"
           placeholder="Search by name"
+          value={nameSearchInput}
           autoComplete="off"
-          onChange={(e) => setNameSearchFilter(e.target.value)}
+          onChange={(e) => setNameSearchInput(e.target.value)}
         />
         <input
           name="searchByTag"
           className="inputSearchTag"
           type="text"
           placeholder="Search by tag"
+          value={tagSearchInput}
           autoComplete="off"
-          onChange={(e) => setTagSearchFilter(e.target.value)}
+          onChange={(e) => setTagSearchInput(e.target.value)}
         />
       </div>
       <div className="studentProfiles">
-        {nameSearchFilter !== "" || tagSearchFilter !== "" // !== null   //&& studentDataFiltered !== undefined // && studentDataFiltered.length > 0
-          ? studentDataFiltered.map((student) => {
-              return (
-                <Profile
-                  key={student.id}
-                  studentData={student}
-                  addTag={submitTag}
-                />
-              );
-            })
-          : studentData.map((student) => {
-              return (
-                <Profile
-                  key={student.id}
-                  studentData={student}
-                  addTag={submitTag}
-                />
-              );
-            })}
+        {
+          // show filtered data if name search
+          // input or tag search input is not blank
+          nameSearchInput !== "" || tagSearchInput !== ""
+            ? studentDataFiltered.map((student) => {
+                return (
+                  <Profile
+                    key={student.id}
+                    studentData={student}
+                    updateTag={updateTag}
+                  />
+                );
+              })
+            : studentData.map((student) => {
+                return (
+                  <Profile
+                    key={student.id}
+                    studentData={student}
+                    updateTag={updateTag}
+                  />
+                );
+              })
+        }
       </div>
     </div>
   );
